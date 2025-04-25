@@ -9,12 +9,24 @@ export default function Footer() {
           <div>
             <h2 className="text-lg font-bold mb-4">Our Locations</h2>
             <div className="grid grid-cols-2 gap-4">
-              <div>JAIPUR</div>
-              <div>MUMBAI</div>
-              <div>CHANDIGARH</div>
-              <div>BENGALURU</div>
-              <div>HYDERABAD</div>
-              <div>DELHI</div>
+              <div>
+                <li>JAIPUR</li>
+              </div>
+              <div>
+                <li>MUMBAI</li>
+              </div>
+              <div>
+                <li>CHANDIGARH</li>
+              </div>
+              <div>
+                <li>BENGALURU</li>
+              </div>
+              <div>
+                <li>HYDERABAD</li>
+              </div>
+              <div>
+                <li>DELHI</li>
+              </div>
             </div>
           </div>
 
