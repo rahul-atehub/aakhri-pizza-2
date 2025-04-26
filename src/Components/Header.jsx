@@ -27,7 +27,7 @@ export default function Header() {
               <NavLink to="/about" className="hover:underline text-orange-900 font-medium">
                 About
               </NavLink>
-              <NavLink to="/Order Online" className="hover:underline text-orange-900 font-medium">
+              <NavLink to="/order online" className="hover:underline text-orange-900 font-medium">
                 Order Online
               </NavLink>
               <NavLink to="/Profile" className="hover:underline text-orange-900 font-medium">
@@ -47,7 +47,7 @@ export default function Header() {
         </div>
 
         {isMobileMenuOpen && (
-          <div className="absolute top-16 right-4 bg-white shadow-lg p-2 space-y-2">
+          <div className="absolute top-16 right-4 bg-white shadow-lg p-2 space-y-2 w-48">
             <NavLink to="/" className="block text-orange-900 font-medium">
               Home
             </NavLink>

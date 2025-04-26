@@ -1,1 +1,12 @@
+/* Removed custom CSS and rely on Tailwind utilities */
 @import "tailwindcss";
+
+/* Apply Tailwind's overflow-x-hidden utility globally */
+html {
+  @apply overflow-x-hidden;
+}
+
+/* Ensure body elements fit properly and prevent empty space */
+body {
+  @apply w-full overflow-x-hidden;
+}
