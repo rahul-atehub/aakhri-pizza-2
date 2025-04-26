@@ -1,5 +1,5 @@
 import React from 'react';
-import OurLocations from './Components/OurLocations';
+import OurLocations from './OurLocations';
 
 export default function MainLayout() {
   return (
