@@ -1,45 +1,48 @@
 import React, { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
+import SearchBar from "./SearchBar";
 
-export default function Header() {
+export default function Header({ onSearch }) {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 w-full bg-white shadow-md z-50">
+    <header className="fixed top-0 w-full bg-gradient-to-r from-orange-100 to-orange-300 shadow-lg z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <div className="flex-shrink-0">
+          <div className="flex items-center space-x-4">
             <Link to="/" className="text-gray-800 hover:text-gray-600">
-              <h1 className="text-3xl text-orange-900 font-bold flex items-center">
-                🍕 AAKHRI PIZZA
+              <h1 className="text-2xl sm:text-3xl text-orange-900 font-bold flex items-center">
+                 AAKHRI PIZZA
               </h1>
             </Link>
           </div>
 
-          <div className="hidden md:block">
-            <div className="flex space-x-8">
-              <NavLink to="/" className="hover:underline text-orange-900 font-medium">
-                Home
-              </NavLink>
-              <NavLink to="/menu" className="hover:underline text-orange-900 font-medium">
-                Menu
-              </NavLink>
-              <NavLink to="/about" className="hover:underline text-orange-900 font-medium">
-                About
-              </NavLink>
-              <NavLink to="/order online" className="hover:underline text-orange-900 font-medium">
-                Order Online
-              </NavLink>
-              <NavLink to="/Profile" className="hover:underline text-orange-900 font-medium">
-                Profile
-              </NavLink>
-            </div>
+          <div className="flex-1 flex justify-center items-center">
+            <SearchBar onSearch={onSearch} className="w-full max-w-[200px] sm:max-w-xs md:max-w-md lg:max-w-lg" />
+          </div>
+
+          <div className="hidden md:flex items-center space-x-4 sm:space-x-8">
+            <NavLink to="/" className="hover:underline text-orange-900 font-medium">
+              Home
+            </NavLink>
+            <NavLink to="/menu" className="hover:underline text-orange-900 font-medium">
+              Menu
+            </NavLink>
+            <NavLink to="/about" className="hover:underline text-orange-900 font-medium">
+              About
+            </NavLink>
+            <NavLink to="/order online" className="hover:underline text-orange-900 font-medium">
+              Order Online
+            </NavLink>
+            <NavLink to="/Profile" className="hover:underline text-orange-900 font-medium">
+              Profile
+            </NavLink>
           </div>
 
           <div className="md:hidden">
             <button
               onClick={() => setMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-orange-900 focus:outline-none hover:text-orange-700"
+              className="text-orange-900 focus:outline-none hover:text-orange-700 text-2xl"
             >
               {isMobileMenuOpen ? "✖" : "☰"}
             </button>
@@ -47,20 +50,20 @@ export default function Header() {
         </div>
 
         {isMobileMenuOpen && (
-          <div className="absolute top-16 right-4 bg-white shadow-lg p-2 space-y-2 w-48">
-            <NavLink to="/" className="block text-orange-900 font-medium">
+          <div className="absolute top-16 right-4 bg-white shadow-lg p-2 space-y-2 w-40 sm:w-48 rounded-md">
+            <NavLink to="/" className="block text-orange-900 font-medium hover:bg-orange-100 p-2 rounded">
               Home
             </NavLink>
-            <NavLink to="/menu" className="block text-orange-900 font-medium">
+            <NavLink to="/menu" className="block text-orange-900 font-medium hover:bg-orange-100 p-2 rounded">
               Menu
             </NavLink>
-            <NavLink to="/about" className="block text-orange-900 font-medium">
+            <NavLink to="/about" className="block text-orange-900 font-medium hover:bg-orange-100 p-2 rounded">
               About
             </NavLink>
-            <NavLink to="/Order Online" className="block text-orange-900 font-medium">
+            <NavLink to="/Order Online" className="block text-orange-900 font-medium hover:bg-orange-100 p-2 rounded">
               Order Online
             </NavLink>
-            <NavLink to="/Profile" className="block text-orange-900 font-medium">
+            <NavLink to="/Profile" className="block text-orange-900 font-medium hover:bg-orange-100 p-2 rounded">
               Profile
             </NavLink>
           </div>
