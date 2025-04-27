@@ -25,11 +25,11 @@ export default function Header({ onSearch }) {
             <NavLink to="/" className="hover:underline text-orange-900 font-medium">
               Home
             </NavLink>
+            <NavLink to="/about us" className="hover:underline text-orange-900 font-medium">
+            About Us
+            </NavLink>
             <NavLink to="/menu" className="hover:underline text-orange-900 font-medium">
               Menu
-            </NavLink>
-            <NavLink to="/about" className="hover:underline text-orange-900 font-medium">
-              About
             </NavLink>
             <NavLink to="/order online" className="hover:underline text-orange-900 font-medium">
               Order Online
