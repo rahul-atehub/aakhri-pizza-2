@@ -14,8 +14,8 @@ export default function OurLocations() {
   return (
     <div className="bg-[#fde1d31a] py-12 px-4 sm:px-8 mx-auto max-w-7xl">
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-gray-800">Our Locations</h2>
-        <p className="text-gray-600 mt-2">Find us in these amazing cities!</p>
+        <h2 className="text-3xl font-bold text-orange-900">Our Locations</h2>
+        <p className="text-orange-900 mt-2">Find us in these amazing cities!</p>
       </div>
       <div className="flex flex-wrap justify-center">
         {locations.map((location, index) => (

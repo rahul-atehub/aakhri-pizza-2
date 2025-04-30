@@ -30,8 +30,8 @@ export default function Footer() {
                 </NavLink>
               </div>
               <div>
-                <NavLink to="/about" className="block font-medium hover:underline">
-                  About
+                <NavLink to="/about-us" className="block font-medium hover:underline">
+                  About Us
                 </NavLink>
               </div>
               <div>

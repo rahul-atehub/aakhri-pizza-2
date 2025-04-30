@@ -1,15 +1,14 @@
 import React from 'react';
-import OurLocations from './Components/OurLocations';
+import OurLocations from './Components/Home/OurLocations';
+import menuData from './data/menuData';
+import PropTypes from 'prop-types';
 
-export default function MainLayout() {
-  const pizzas = [
-    "Margherita",
-    "Pepperoni",
-    "BBQ Chicken",
-    "Veggie",
-    "Hawaiian",
-    "Meat Lovers",
-  ];
+export default function MainLayout({ searchResults, searchTerm }) {
+  // If we have a search term but no results
+  const noResultsFound = searchTerm && searchResults.length === 0;
+  
+  // Use search results if available, otherwise use the default pizzas list
+  const pizzasToDisplay = searchTerm ? searchResults : menuData.slice(0, 6);
 
   return (
     <>
@@ -21,10 +20,10 @@ export default function MainLayout() {
         }}
       >
         <div>
-          <h1 className="text-3xl text-white sm:text-4xl lg:text-5xl font-bold text-left">
+          <h1 className="text-3xl text-orange-200 sm:text-4xl lg:text-5xl font-bold text-left">
             Welcome to Aakhri Pizza
           </h1>
-          <p className="text-base text-white sm:text-lg lg:text-xl mt-2 text-left">
+          <p className="text-base text-orange-200 sm:text-lg lg:text-xl mt-2 text-left">
             The best pizza experience awaits you!
           </p>
         </div>
@@ -33,18 +32,42 @@ export default function MainLayout() {
         <h2 className="text-2xl sm:text-3xl text-orange-900 font-bold text-center mb-6">
           Our Specialties
         </h2>
+        
+        {searchTerm && (
+          <div className="mb-6 text-center">
+            {noResultsFound ? (
+              <p className="text-orange-700">No results found for "{searchTerm}"</p>
+            ) : (
+              <p className="text-orange-700">Showing results for "{searchTerm}"</p>
+            )}
+          </div>
+        )}
+        
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-evenly">
-          {pizzas.map((pizza, index) => (
+          {pizzasToDisplay.map((pizza, index) => (
             <div
               key={index}
-              className="relative group bg-white p-4 rounded-lg shadow-md hover:shadow-2xl hover:scale-105 transition-transform duration-300"
+              className="relative group bg-white p-4 rounded-lg shadow-md hover:shadow-2xl transform hover:scale-105 hover:bg-orange-50 hover:border-orange-200 border border-transparent transition-all duration-300 ease-in-out cursor-pointer"
             >
               <img
-                src="https://images.pexels.com/photos/1566837/pexels-photo-1566837.jpeg?cs=srgb&dl=pexels-narda-yescas-724842-1566837.jpg&fm=jpg"
-                alt={pizza}
-                className="w-full h-auto rounded-md mb-4"
+                src={pizza.image}
+                alt={pizza.name}
+                className="w-full h-auto rounded-md mb-4 transition-all duration-300 group-hover:brightness-105 group-hover:contrast-105"
               />
-              <h3 className="text-lg font-bold text-gray-800 text-center">{pizza}</h3>
+              <div className="overflow-hidden">
+                <h3 className="text-lg font-bold text-gray-800 group-hover:text-orange-600 text-center transition-all duration-300">
+                  {pizza.name}
+                </h3>
+                <p className="text-gray-600 text-sm text-center mt-2">
+                  {pizza.description}
+                </p>
+                <p className="text-orange-700 font-bold text-center mt-2">
+                  ${pizza.price}
+                </p>
+                <p className="text-gray-600 text-sm text-center pt-2 mt-1 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                  Add to cart
+                </p>
+              </div>
             </div>
           ))}
         </div>
@@ -53,3 +76,13 @@ export default function MainLayout() {
     </>
   );
 }
+
+MainLayout.propTypes = {
+  searchResults: PropTypes.array,
+  searchTerm: PropTypes.string
+};
+
+MainLayout.defaultProps = {
+  searchResults: [],
+  searchTerm: ""
+};

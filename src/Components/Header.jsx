@@ -25,8 +25,8 @@ export default function Header({ onSearch }) {
             <NavLink to="/" className="hover:underline text-orange-900 font-medium">
               Home
             </NavLink>
-            <NavLink to="/about us" className="hover:underline text-orange-900 font-medium">
-            About Us
+            <NavLink to="/about-us" className="hover:underline text-orange-900 font-medium">
+              About Us
             </NavLink>
             <NavLink to="/menu" className="hover:underline text-orange-900 font-medium">
               Menu
@@ -57,7 +57,7 @@ export default function Header({ onSearch }) {
             <NavLink to="/menu" className="block text-orange-900 font-medium hover:bg-orange-100 p-2 rounded">
               Menu
             </NavLink>
-            <NavLink to="/about" className="block text-orange-900 font-medium hover:bg-orange-100 p-2 rounded">
+            <NavLink to="/about-us" className="block text-orange-900 font-medium hover:bg-orange-100 p-2 rounded">
               About
             </NavLink>
             <NavLink to="/Order Online" className="block text-orange-900 font-medium hover:bg-orange-100 p-2 rounded">

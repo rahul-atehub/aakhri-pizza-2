@@ -1,41 +1,50 @@
-import React, { useState } from "react";
-import { FaSearch, FaArrowRight } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import { FaSearch } from "react-icons/fa";
+import PropTypes from "prop-types";
 
-export default function SearchBar({ onSearch }) {
+export default function SearchBar({ onSearch, className }) {
   const [query, setQuery] = useState("");
+
+  useEffect(() => {
+    // Debounce search for performance - only search after 300ms of no typing
+    const delaySearch = setTimeout(() => {
+      onSearch(query);
+    }, 300);
+
+    return () => clearTimeout(delaySearch);
+  }, [query, onSearch]);
 
   const handleInputChange = (e) => {
     const value = e.target.value;
     setQuery(value);
   };
 
-  const handleSearch = () => {
-    onSearch(query);
-  };
-
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
-      handleSearch();
+      onSearch(query);
     }
   };
 
   return (
-    <div className="relative flex items-center border border-orange-900 rounded-full px-2 py-2 focus-within:ring-2 focus-within:ring-orange-900 w-80">
+    <div className={`relative flex items-center border border-orange-900 rounded-full px-2 py-2 focus-within:ring-2 focus-within:ring-orange-900 ${className}`}>
       <FaSearch className="text-orange-900 mr-2" />
       <input
         type="text"
         value={query}
         onChange={handleInputChange}
         onKeyPress={handleKeyPress}
-        placeholder="Search..."
-        className="flex-grow focus:outline-none text-orange-900"
+        placeholder="Search our specialties..."
+        className="flex-grow focus:outline-none text-orange-900 bg-transparent"
       />
-      <button
-        onClick={handleSearch}
-        className="text-orange-900 hover:text-orange-700 ml-2"
-      >
-        <FaArrowRight />
-      </button>
     </div>
   );
 }
+
+SearchBar.propTypes = {
+  onSearch: PropTypes.func.isRequired,
+  className: PropTypes.string
+};
+
+SearchBar.defaultProps = {
+  className: ""
+};
