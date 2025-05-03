@@ -40,9 +40,15 @@ export default function Footer() {
                 </NavLink>
               </div>
               <div>
+                <NavLink to="/cart" className="block font-medium hover:underline">
+                  Cart
+                </NavLink>
+              </div>
+              <div>
                 <NavLink to="/profile" className="block font-medium hover:underline">
                   Profile
                 </NavLink>
+               
               </div>
             </div>
           </div>
