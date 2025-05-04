@@ -2,14 +2,54 @@ import React, { useState } from 'react';
 
 export default function OrderForm() {
   const [orderType, setOrderType] = useState('delivery');
+  const [showSuccess, setShowSuccess] = useState(false);
   
   const handleOrderTypeChange = (type) => {
     setOrderType(type);
   };
 
+  const handlePlaceOrder = () => {
+    setShowSuccess(true);
+    // Hide the alert after 6 seconds
+    setTimeout(() => {
+      setShowSuccess(false);
+    }, 6000);
+  };
+
   return (
     <div className="bg-gray-100 min-h-screen flex items-center justify-center mt-11 py-12 px-4">
-      <div className="max-w-4xl w-full bg-white p-8 rounded-lg shadow-md">
+      <div className="max-w-4xl w-full bg-white p-8 rounded-lg shadow-md relative">
+        {/* Success Alert */}
+        {showSuccess && (
+          <div className="fixed inset-0 flex items-center justify-center z-50">
+            <div 
+              className="absolute inset-0 bg-black/10 backdrop-blur-sm"
+              onClick={() => setShowSuccess(false)}
+            ></div>
+            <div className="bg-white p-6 rounded-lg shadow-xl z-10 max-w-md w-full mx-4 transform transition-all duration-300 translate-y-0 scale-100">
+              <div className="flex items-center justify-center mb-4">
+                <div className="rounded-full bg-green-100 p-3">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+              </div>
+              <h3 className="text-xl font-bold text-center text-gray-900 mb-2">Order Placed Successfully!</h3>
+              <p className="text-gray-600 text-center mb-4">
+                {orderType === 'delivery' 
+                  ? "Your order is on the way! You'll receive an update when it's out for delivery."
+                  : "Your order is being prepared! You'll receive an update when it's ready for pickup."}
+              </p>
+              <button 
+                onClick={() => setShowSuccess(false)}
+                className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded-md transition duration-200"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Title - only shown for takeaway view */}
         {orderType === 'takeaway' && (
           <div className="text-center mb-6">
@@ -119,7 +159,10 @@ export default function OrderForm() {
         </div>
 
         {/* Submit Button */}
-        <button className="w-full bg-orange-500 hover:bg-orange-700 text-white py-3 px-4 rounded-md transition duration-200">
+        <button 
+          className="w-full bg-orange-500 hover:bg-orange-700 text-white py-3 px-4 rounded-md transition duration-200"
+          onClick={handlePlaceOrder}
+        >
           Place Order
         </button>
       </div>
