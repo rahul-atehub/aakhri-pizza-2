@@ -4,8 +4,9 @@ import Header from "./Components/Header.jsx";
 import Footer from "./Components/Footer.jsx";
 import MainLayout from "./MainLayout.jsx";
 import AboutUs from "./AboutUs.jsx";
-import Menu from './Menu.jsx'; // Import Menu
+import Menu from "./Menu.jsx"; // Import Menu
 import menuData from "./data/menuData.jsx"; // Correct import
+import OrderForm from "./OrderForm.jsx"; // Import Order-Online
 
 function App() {
   const [searchResults, setSearchResults] = useState([]);
@@ -48,13 +49,12 @@ function App() {
           <Route
             path="/menu"
             element={
-              <Menu
-                searchResults={searchResults}
-                searchTerm={searchTerm}
-              />
+              <Menu searchResults={searchResults} searchTerm={searchTerm} />
             }
           />
           <Route path="/about-us" element={<AboutUs />} />
+
+          <Route path="/Order-Online" element={<OrderForm />} />
         </Routes>
       </main>
 
