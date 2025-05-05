@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { NavLink, Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
-import { FaShoppingCart } from "react-icons/fa";
+import { FaShoppingCart, FaUser } from "react-icons/fa";
 
-
-export default function Header({ onSearch }) {
+export default function Header({ onSearch, onLoginClick, isLoggedIn, userName }) {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobileView, setIsMobileView] = useState(false);
 
@@ -16,6 +15,14 @@ export default function Header({ onSearch }) {
     window.addEventListener('resize', checkScreenSize);
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
+
+  // Handle Profile click to trigger login/logout function
+  const handleProfileClick = (e) => {
+    e.preventDefault(); // Prevent default navigation
+    if (onLoginClick) {
+      onLoginClick();
+    }
+  };
 
   return (
     <header className="fixed top-0 w-full bg-gradient-to-r from-orange-100 to-orange-300 shadow-lg z-50">
@@ -30,11 +37,11 @@ export default function Header({ onSearch }) {
           </div>
 
           <div className="flex-1 flex justify-center items-center">
-          <SearchBar
-  onSearch={onSearch}
-  className="w-full max-w-[120px] sm:max-w-[160px] md:max-w-[200px] lg:max-w-[240px] flex items-center"
-  showPlaceholder={!isMobileView} // Add this line
-/>
+            <SearchBar
+              onSearch={onSearch}
+              className="w-full max-w-[120px] sm:max-w-[160px] md:max-w-[200px] lg:max-w-[240px] flex items-center"
+              showPlaceholder={!isMobileView}
+            />
           </div>
 
           <div className="hidden md:flex items-center space-x-4 sm:space-x-8 ml-2 md:ml-6 lg:ml-10">
@@ -62,12 +69,23 @@ export default function Header({ onSearch }) {
             >
               Order Online
             </NavLink>
-            <NavLink
-              to="/Profile"
-              className="hover:underline text-orange-900 font-medium"
+            
+            {/* Profile/Login link with dynamic text based on authentication status */}
+            <a
+              href="#"
+              onClick={handleProfileClick}
+              className="hover:underline text-orange-900 font-medium cursor-pointer flex items-center"
             >
-              Profile
-            </NavLink>
+              <FaUser className="mr-1" />
+              {isLoggedIn ? (
+                <span className="flex items-center">
+                  {userName ? userName.split('@')[0] : 'Profile'}
+                </span>
+              ) : (
+                'Login'
+              )}
+            </a>
+            
             <NavLink
               to="/cart"
               className="flex items-center space-x-2 text-orange-900 font-medium hover:underline"
@@ -113,12 +131,22 @@ export default function Header({ onSearch }) {
             >
               Order Online
             </NavLink>
-            <NavLink
-              to="/Profile"
-              className="block text-orange-900 font-medium hover:bg-orange-100 p-2 rounded"
+            
+            {/* Profile/Login link in mobile menu */}
+            <a
+              href="#"
+              onClick={handleProfileClick}
+              className="block text-orange-900 font-medium hover:bg-orange-100 p-2 rounded cursor-pointer flex items-center"
             >
-              Profile
-            </NavLink>
+              <FaUser className="mr-2" />
+              {isLoggedIn ? (
+                <span>
+                  {userName ? userName.split('@')[0] : 'Profile'} (Logout)
+                </span>
+              ) : (
+                'Login'
+              )}
+            </a>
           </div>
         )}
       </div>

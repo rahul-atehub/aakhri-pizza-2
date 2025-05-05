@@ -45,9 +45,9 @@ export default function Footer() {
                 </NavLink>
               </div>
               <div>
-                <NavLink to="/profile" className="block font-medium hover:underline">
+                {/* <NavLink to="/profile" className="block font-medium hover:underline">
                   Profile
-                </NavLink>
+                </NavLink> */}
                
               </div>
             </div>
