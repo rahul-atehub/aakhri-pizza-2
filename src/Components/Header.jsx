@@ -26,46 +26,49 @@ export default function Header({ onSearch, onLoginClick, isLoggedIn, userName })
 
   return (
     <header className="fixed top-0 w-full bg-gradient-to-r from-orange-100 to-orange-300 shadow-lg z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
         <div className="flex justify-between items-center h-16">
-          <div className="flex items-center space-x-4">
+          {/* Logo */}
+          <div className="flex-shrink-0">
             <Link to="/" className="text-gray-800 hover:text-gray-600">
-              <h1 className="text-2xl sm:text-3xl text-orange-900 font-bold flex items-center">
+              <h1 className="text-2xl sm:text-3xl text-orange-900 font-bold">
                 AAKHRI PIZZA
               </h1>
             </Link>
           </div>
 
-          <div className="flex-1 flex justify-center items-center">
+          {/* Search Bar - centered with consistent spacing */}
+          <div className="flex-1 mx-4 md:mx-6 lg:mx-8 flex justify-center">
             <SearchBar
               onSearch={onSearch}
-              className="w-full max-w-[120px] sm:max-w-[160px] md:max-w-[200px] lg:max-w-[240px] flex items-center"
+              className="w-full max-w-[120px] sm:max-w-[160px] md:max-w-[220px] lg:max-w-[280px] flex items-center"
               showPlaceholder={!isMobileView}
             />
           </div>
 
-          <div className="hidden md:flex items-center space-x-4 sm:space-x-8 ml-2 md:ml-6 lg:ml-10">
+          {/* Navigation Links - Desktop */}
+          <nav className="hidden md:flex items-center space-x-5 lg:space-x-6">
             <NavLink
               to="/"
-              className="hover:underline text-orange-900 font-medium"
+              className="hover:underline text-orange-900 font-medium px-1"
             >
               Home
             </NavLink>
             <NavLink
               to="/about-us"
-              className="hover:underline text-orange-900 font-medium"
+              className="hover:underline text-orange-900 font-medium px-1"
             >
               About Us
             </NavLink>
             <NavLink
               to="/menu"
-              className="hover:underline text-orange-900 font-medium"
+              className="hover:underline text-orange-900 font-medium px-1"
             >
               Menu
             </NavLink>
             <NavLink
               to="/order-online"
-              className="hover:underline text-orange-900 font-medium"
+              className="hover:underline text-orange-900 font-medium px-1"
             >
               Order Online
             </NavLink>
@@ -74,9 +77,9 @@ export default function Header({ onSearch, onLoginClick, isLoggedIn, userName })
             <a
               href="#"
               onClick={handleProfileClick}
-              className="hover:underline text-orange-900 font-medium cursor-pointer flex items-center"
+              className="hover:underline text-orange-900 font-medium cursor-pointer flex items-center px-1"
             >
-              <FaUser className="mr-1" />
+              <FaUser className="mr-1.5" />
               {isLoggedIn ? (
                 <span className="flex items-center">
                   {userName ? userName.split('@')[0] : 'Profile'}
@@ -88,46 +91,47 @@ export default function Header({ onSearch, onLoginClick, isLoggedIn, userName })
             
             <NavLink
               to="/cart"
-              className="flex items-center space-x-2 text-orange-900 font-medium hover:underline"
+              className="flex items-center text-orange-900 font-medium hover:underline pl-1"
             >
-              <FaShoppingCart className="text-orange-900 text-base" />
-              {/* <span className="text-sm sm:text-base">Cart</span> */}
+              <FaShoppingCart className="text-orange-900 text-lg" />
             </NavLink>
-          </div>
+          </nav>
 
+          {/* Mobile Menu Button */}
           <div className="md:hidden">
             <button
               onClick={() => setMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-orange-900 focus:outline-none hover:text-orange-700 text-2xl"
+              className="text-orange-900 focus:outline-none hover:text-orange-700 text-2xl p-2"
             >
               {isMobileMenuOpen ? "✖" : "☰"}
             </button>
           </div>
         </div>
 
+        {/* Mobile Menu Dropdown */}
         {isMobileMenuOpen && (
-          <div className="absolute top-16 right-4 bg-white shadow-lg p-2 space-y-2 w-40 sm:w-48 rounded-md">
+          <div className="absolute top-16 right-3 bg-white shadow-lg p-2 w-40 sm:w-48 rounded-md">
             <NavLink
               to="/"
-              className="block text-orange-900 font-medium hover:bg-orange-100 p-2 rounded"
+              className="block text-orange-900 font-medium hover:bg-orange-100 p-2.5 rounded"
             >
               Home
             </NavLink>
             <NavLink
               to="/menu"
-              className="block text-orange-900 font-medium hover:bg-orange-100 p-2 rounded"
+              className="block text-orange-900 font-medium hover:bg-orange-100 p-2.5 rounded"
             >
               Menu
             </NavLink>
             <NavLink
               to="/about-us"
-              className="block text-orange-900 font-medium hover:bg-orange-100 p-2 rounded"
+              className="block text-orange-900 font-medium hover:bg-orange-100 p-2.5 rounded"
             >
               About
             </NavLink>
             <NavLink
               to="/Order Online"
-              className="block text-orange-900 font-medium hover:bg-orange-100 p-2 rounded"
+              className="block text-orange-900 font-medium hover:bg-orange-100 p-2.5 rounded"
             >
               Order Online
             </NavLink>
@@ -136,7 +140,7 @@ export default function Header({ onSearch, onLoginClick, isLoggedIn, userName })
             <a
               href="#"
               onClick={handleProfileClick}
-              className="block text-orange-900 font-medium hover:bg-orange-100 p-2 rounded cursor-pointer flex items-center"
+              className="block text-orange-900 font-medium hover:bg-orange-100 p-2.5 rounded cursor-pointer flex items-center"
             >
               <FaUser className="mr-2" />
               {isLoggedIn ? (

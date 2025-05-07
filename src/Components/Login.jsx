@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
   const [activeTab, setActiveTab] = useState("login");
@@ -7,6 +7,16 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // Check if user is already logged in on component mount
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem("user");
+    if (loggedInUser) {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -37,6 +47,20 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
 
       // For demo purposes - in a real app you'd verify credentials with your backend
       if (email && password) {
+        // Set logged in state
+        setIsLoggedIn(true);
+        
+        // Store in localStorage for persistence
+        localStorage.setItem("user", JSON.stringify({ email }));
+        
+        // Show login alert
+        setShowAlert(true);
+        
+        // Hide alert after 3 seconds
+        setTimeout(() => {
+          setShowAlert(false);
+        }, 3000);
+
         // Notify parent component about successful login
         if (onLoginSuccess) {
           onLoginSuccess({ email });
@@ -56,6 +80,20 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
 
       // For demo - in a real app you'd create the user in your backend
       if (email && password && password === confirmPassword) {
+        // Set logged in state
+        setIsLoggedIn(true);
+        
+        // Store in localStorage for persistence
+        localStorage.setItem("user", JSON.stringify({ email }));
+        
+        // Show login alert
+        setShowAlert(true);
+        
+        // Hide alert after 3 seconds
+        setTimeout(() => {
+          setShowAlert(false);
+        }, 3000);
+
         // Notify parent component about successful registration and login
         if (onLoginSuccess) {
           onLoginSuccess({ email });
@@ -72,8 +110,26 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
     }
   };
 
+  // Alert component
+  const Alert = ({ message, type }) => (
+    <div className={`fixed top-16 right-4 p-4 rounded-md shadow-md ${type === 'success' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'}`}>
+      {message}
+    </div>
+  );
+
+  // If logged in, just show the login alert
+  if (isLoggedIn) {
+    return (
+      <>
+        {showAlert && <Alert message="You have successfully logged in!" type="success" />}
+      </>
+    );
+  }
+
   // Return null if modal is not open
-  if (!isOpen) return null;
+  if (!isOpen) {
+    return null;
+  }
 
   return (
     <div
@@ -161,7 +217,7 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
               </label>
               <input
                 type="password"
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-orange-900"
+                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-orange-500"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />

@@ -3,12 +3,9 @@ import OurLocations from "./Components/Home/OurLocations";
 import menuData from "./data/menuData";
 import PropTypes from "prop-types";
 
-export default function MainLayout({ searchResults, searchTerm }) {
-  // If we have a search term but no results
-  const noResultsFound = searchTerm && searchResults.length === 0;
-
-  // Use search results if available, otherwise use the default pizzas list
-  const pizzasToDisplay = searchTerm ? searchResults : menuData.slice(0, 6);
+export default function MainLayout() {
+  // Use the default pizzas list
+  const pizzasToDisplay = menuData.slice(0, 6);
 
   return (
     <>
@@ -28,25 +25,12 @@ export default function MainLayout({ searchResults, searchTerm }) {
           </p>
         </div>
       </div>
+
       <div className="specialties-section w-full max-w-7xl justify-around m-auto px-4 sm:px-8 py-8">
         <h2 className="text-2xl sm:text-3xl text-orange-900 font-bold text-center mb-6">
           Our Specialties
         </h2>
-
-        {searchTerm && (
-          <div className="mb-6 text-center">
-            {noResultsFound ? (
-              <p className="text-orange-700">
-                No results found for "{searchTerm}"
-              </p>
-            ) : (
-              <p className="text-orange-700">
-                Showing results for "{searchTerm}"
-              </p>
-            )}
-          </div>
-        )}
-
+        
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-evenly">
           {pizzasToDisplay.map((pizza, index) => (
             <div
@@ -76,17 +60,8 @@ export default function MainLayout({ searchResults, searchTerm }) {
           ))}
         </div>
       </div>
+
       <OurLocations />
     </>
   );
 }
-
-MainLayout.propTypes = {
-  searchResults: PropTypes.array,
-  searchTerm: PropTypes.string,
-};
-
-MainLayout.defaultProps = {
-  searchResults: [],
-  searchTerm: "",
-};

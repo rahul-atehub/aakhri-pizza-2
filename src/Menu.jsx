@@ -13,16 +13,35 @@ export default function Menu({ searchTerm, searchResults }) {
     const fetchMenuData = async (retryCount = 3) => {
       try {
         setLoading(true);
+        console.log("Fetching menu data...");
 
-        // Allow up to 10 seconds before timing out
+        // Use TheMealDB API - this endpoint always returns data (categories)
         const response = await axios.get(
-          "https://world.openfoodfacts.org/cgi/search.pl?search_terms=pizza&search_simple=1&action=process&json=1",
+          "https://www.themealdb.com/api/json/v1/1/categories.php",
           { timeout: 10000 } // 10 seconds
         );
 
-        const pizzaProducts = response.data.products || [];
-        setMenuData(pizzaProducts);
-        selectRandomPizzas(pizzaProducts);
+        console.log("API Response:", response.data);
+
+        // Check if we have categories data
+        if (response.data && response.data.categories) {
+          // Transform categories data to menu items format
+          const menuItems = response.data.categories.map(category => ({
+            id: category.idCategory,
+            name: category.strCategory,
+            description: category.strCategoryDescription.substring(0, 100) + "...",
+            image_url: category.strCategoryThumb,
+            price: ((Math.random() * 10) + 5).toFixed(2) // Generate random price between $5-$15
+          }));
+          
+          console.log("Transformed data:", menuItems);
+          setMenuData(menuItems);
+          selectRandomPizzas(menuItems);
+        } else {
+          // If API returns unexpected format
+          setError("No menu items found. Please try again later.");
+        }
+        
         setLoading(false);
       } catch (err) {
         console.error("Fetch error:", err.message);
@@ -42,7 +61,7 @@ export default function Menu({ searchTerm, searchResults }) {
     fetchMenuData();
   }, []);
 
-  // Function to select 9 random pizzas from the menu data
+  // Function to select random pizzas from the menu data
   const selectRandomPizzas = (pizzaData) => {
     if (!pizzaData || pizzaData.length === 0) return [];
 
@@ -65,9 +84,13 @@ export default function Menu({ searchTerm, searchResults }) {
     setRandomPizzas(shuffled.slice(0, 9));
   };
 
-  // Determine which pizzas to display based on search
-  const pizzasToDisplay = searchTerm
-    ? searchResults
+  // Determine which items to display based on search
+  const itemsToDisplay = searchTerm
+    ? (searchResults && searchResults.length > 0) 
+        ? searchResults 
+        : menuData.filter(item => 
+            item.name.toLowerCase().includes(searchTerm.toLowerCase())
+          )
     : randomPizzas.length > 0
     ? randomPizzas
     : menuData;
@@ -104,49 +127,50 @@ export default function Menu({ searchTerm, searchResults }) {
 
       {searchTerm && (
         <div className="mb-6 text-center">
-          {pizzasToDisplay.length === 0 ? (
+          {itemsToDisplay.length === 0 ? (
             <p className="text-red-500">No results found for "{searchTerm}"</p>
           ) : (
-            <p className="text-green-600">Showing results for "{searchTerm}"</p>
+            <p className="text-green-600">Found {itemsToDisplay.length} results for "{searchTerm}"</p>
           )}
         </div>
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {pizzasToDisplay.map((pizza, index) => (
-          <div
-            key={index}
-            className="pizza-card overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-transform duration-300"
-          >
-            <img
-              src={
-                pizza.image_url ||
-                "https://via.placeholder.com/400x300?text=Pizza+Image"
-              }
-              alt={pizza.product_name}
-              className="w-full h-48 object-cover"
-            />
-            <h3>{pizza.product_name || "Unnamed Pizza"}</h3>
-            <p>{pizza.generic_name || "Delicious pizza made with love"}</p>
-
-            {/* since api doesn't give price fall back to default */}
-
-            <div className="p-4">
-              <h3 className="text-xl font-semibold mb-2 text-gray-800">
-                {pizza.name}
-              </h3>
-              <p className="text-gray-600 mb-2">{pizza.description}</p>
-              <div className="flex items-center justify-between mb-3">
-                <p className="text-orange-600 font-bold">
-                  ${pizza.price || "9.99"}
-                </p>
-                <button className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition-colors text-sm">
-                  Add to Cart
-                </button>
+        {itemsToDisplay.length > 0 ? (
+          itemsToDisplay.map((item) => (
+            <div
+              key={item.id}
+              className="pizza-card overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-transform duration-300"
+            >
+              <img
+                src={
+                  item.image_url ||
+                  "https://via.placeholder.com/400x300?text=Food+Image"
+                }
+                alt={item.name}
+                className="w-full h-48 object-cover"
+              />
+              <div className="p-4">
+                <h3 className="text-xl font-semibold mb-2 text-gray-800">
+                  {item.name}
+                </h3>
+                <p className="text-gray-600 mb-2">{item.description}</p>
+                <div className="flex items-center justify-between mb-3">
+                  <p className="text-orange-600 font-bold">
+                    ${item.price}
+                  </p>
+                  <button className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition-colors text-sm">
+                    Add to Cart
+                  </button>
+                </div>
               </div>
             </div>
+          ))
+        ) : (
+          <div className="col-span-3 text-center py-8">
+            <p className="text-gray-500">No items found matching your search.</p>
           </div>
-        ))}
+        )}
       </div>
     </div>
   );
