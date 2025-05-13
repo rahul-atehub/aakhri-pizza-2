@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
+import { useCart } from "./Cart.jsx"; // Import the useCart hook
 
 export default function Menu({ searchTerm, searchResults }) {
   const [menuData, setMenuData] = useState([]);
   const [randomPizzas, setRandomPizzas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
+  // Use the cart context
+  const { addToCart } = useCart();
 
   useEffect(() => {
     // Fetch menu data from API
@@ -95,6 +99,36 @@ export default function Menu({ searchTerm, searchResults }) {
     ? randomPizzas
     : menuData;
 
+  // Handle add to cart with notification
+  const handleAddToCart = (item) => {
+    addToCart(item);
+    
+    // Show a notification or feedback
+    showAddToCartNotification(item.name);
+  };
+
+  // Function to show a temporary add-to-cart notification
+  const showAddToCartNotification = (itemName) => {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = 'fixed bottom-4 right-4 bg-green-500 text-white py-2 px-4 rounded shadow-lg z-50';
+    notification.textContent = `${itemName} added to cart!`;
+    
+    // Add to document
+    document.body.appendChild(notification);
+    
+    // Remove after 2 seconds
+    setTimeout(() => {
+      notification.style.opacity = '0';
+      notification.style.transition = 'opacity 0.5s ease';
+      setTimeout(() => {
+        if (document.body.contains(notification)) {
+          document.body.removeChild(notification);
+        }
+      }, 500);
+    }, 2000);
+  };
+
   // Show loading state
   if (loading) {
     return (
@@ -159,7 +193,10 @@ export default function Menu({ searchTerm, searchResults }) {
                   <p className="text-orange-600 font-bold">
                     ${item.price}
                   </p>
-                  <button className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition-colors text-sm">
+                  <button 
+                    className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition-colors text-sm"
+                    onClick={() => handleAddToCart(item)}
+                  >
                     Add to Cart
                   </button>
                 </div>
@@ -184,4 +221,4 @@ Menu.propTypes = {
 Menu.defaultProps = {
   searchTerm: "",
   searchResults: [],
-};
+};  

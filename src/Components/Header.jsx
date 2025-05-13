@@ -2,10 +2,15 @@ import React, { useState, useEffect } from "react";
 import { NavLink, Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
+import { useCart } from "../Cart.jsx"; // Import the useCart hook
 
 export default function Header({ onSearch, onLoginClick, isLoggedIn, userName }) {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobileView, setIsMobileView] = useState(false);
+  
+  // Use the cart context to get cart functions and state
+  const { toggleCart, getCartCount } = useCart();
+  const cartCount = getCartCount();
 
   useEffect(() => {
     const checkScreenSize = () => {
@@ -24,8 +29,14 @@ export default function Header({ onSearch, onLoginClick, isLoggedIn, userName })
     }
   };
 
+  // Handle cart icon click
+  const handleCartClick = (e) => {
+    e.preventDefault(); // Prevent default navigation
+    toggleCart(); // Open/close the cart using the cart context
+  };
+
   return (
-    <header className="fixed top-0 w-full bg-gradient-to-r from-orange-100 to-orange-300 shadow-lg z-50">
+    <header className="fixed top-0 w-full bg-gradient-to-r from-orange-100 to-orange-300 shadow-lg z-40">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -89,12 +100,19 @@ export default function Header({ onSearch, onLoginClick, isLoggedIn, userName })
               )}
             </a>
             
-            <NavLink
-              to="/cart"
-              className="flex items-center text-orange-900 font-medium hover:underline pl-1"
+            {/* Cart button with count badge */}
+            <a
+              href="#"
+              onClick={handleCartClick}
+              className="relative flex items-center text-orange-900 font-medium hover:underline pl-1"
             >
               <FaShoppingCart className="text-orange-900 text-lg" />
-            </NavLink>
+              {cartCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-orange-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
+            </a>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -110,7 +128,7 @@ export default function Header({ onSearch, onLoginClick, isLoggedIn, userName })
 
         {/* Mobile Menu Dropdown */}
         {isMobileMenuOpen && (
-          <div className="absolute top-16 right-3 bg-white shadow-lg p-2 w-40 sm:w-48 rounded-md">
+          <div className="absolute top-16 right-3 bg-white shadow-lg p-2 w-40 sm:w-48 rounded-md z-30">
             <NavLink
               to="/"
               className="block text-orange-900 font-medium hover:bg-orange-100 p-2.5 rounded"
@@ -130,7 +148,7 @@ export default function Header({ onSearch, onLoginClick, isLoggedIn, userName })
               About
             </NavLink>
             <NavLink
-              to="/Order Online"
+              to="/order-online"
               className="block text-orange-900 font-medium hover:bg-orange-100 p-2.5 rounded"
             >
               Order Online
@@ -150,6 +168,16 @@ export default function Header({ onSearch, onLoginClick, isLoggedIn, userName })
               ) : (
                 'Login'
               )}
+            </a>
+            
+            {/* Cart link in mobile menu */}
+            <a
+              href="#"
+              onClick={handleCartClick}
+              className="block text-orange-900 font-medium hover:bg-orange-100 p-2.5 rounded cursor-pointer flex items-center"
+            >
+              <FaShoppingCart className="mr-2" />
+              Cart {cartCount > 0 && `(${cartCount})`}
             </a>
           </div>
         )}

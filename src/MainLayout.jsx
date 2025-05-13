@@ -2,11 +2,45 @@ import React from "react";
 import OurLocations from "./Components/Home/OurLocations";
 import menuData from "./data/menuData";
 import PropTypes from "prop-types";
+import { useCart } from "./Cart.jsx"; // Import the useCart hook
 
 export default function MainLayout() {
+  // Use the cart context
+  const { addToCart } = useCart();
+  
   // Use the default pizzas list
   const pizzasToDisplay = menuData.slice(0, 6);
+  
+  // Handle add to cart with notification
+  const handleAddToCart = (pizza) => {
+    addToCart(pizza);
+    
+    // Show a notification
+    showAddToCartNotification(pizza.name);
+  };
 
+  // Function to show a temporary add-to-cart notification
+  const showAddToCartNotification = (itemName) => {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = 'fixed bottom-4 right-4 bg-green-500 text-white py-2 px-4 rounded shadow-lg z-50';
+    notification.textContent = `${itemName} added to cart!`;
+    
+    // Add to document
+    document.body.appendChild(notification);
+    
+    // Remove after 2 seconds
+    setTimeout(() => {
+      notification.style.opacity = '0';
+      notification.style.transition = 'opacity 0.5s ease';
+      setTimeout(() => {
+        if (document.body.contains(notification)) {
+          document.body.removeChild(notification);
+        }
+      }, 500);
+    }, 2000);
+  };
+  
   return (
     <>
       <div
@@ -25,12 +59,10 @@ export default function MainLayout() {
           </p>
         </div>
       </div>
-
       <div className="specialties-section w-full max-w-7xl justify-around m-auto px-4 sm:px-8 py-8">
         <h2 className="text-2xl sm:text-3xl text-orange-900 font-bold text-center mb-6">
           Our Specialties
         </h2>
-        
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-evenly">
           {pizzasToDisplay.map((pizza, index) => (
             <div
@@ -52,7 +84,13 @@ export default function MainLayout() {
                 <p className="text-orange-700 font-bold text-center mt-2">
                   ${pizza.price}
                 </p>
-                <button className="bg-orange-500 text-white text-sm mt-3 px-4 py-2 rounded opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 mx-auto block hover:bg-orange-600">
+                <button 
+                  className="bg-orange-500 text-white text-sm mt-3 px-4 py-2 rounded opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 mx-auto block hover:bg-orange-600"
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent any parent click events
+                    handleAddToCart(pizza);
+                  }}
+                >
                   Add to Cart
                 </button>
               </div>
@@ -60,7 +98,6 @@ export default function MainLayout() {
           ))}
         </div>
       </div>
-
       <OurLocations />
     </>
   );

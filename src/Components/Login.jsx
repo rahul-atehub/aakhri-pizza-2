@@ -10,7 +10,7 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
   const [showAlert, setShowAlert] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // Check if user is already logged in on component mount
+  // Check if user is already logged in on component mount [when the page loads for the first time]
   useEffect(() => {
     const loggedInUser = localStorage.getItem("user");
     if (loggedInUser) {
@@ -33,7 +33,7 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
     if (activeTab === "register" && password !== confirmPassword) {
       setError("Passwords do not match");
       return false;
-    }
+    } 
 
     return true;
   };
@@ -49,13 +49,13 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
       if (email && password) {
         // Set logged in state
         setIsLoggedIn(true);
-        
+
         // Store in localStorage for persistence
         localStorage.setItem("user", JSON.stringify({ email }));
-        
+
         // Show login alert
         setShowAlert(true);
-        
+
         // Hide alert after 3 seconds
         setTimeout(() => {
           setShowAlert(false);
@@ -82,13 +82,13 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
       if (email && password && password === confirmPassword) {
         // Set logged in state
         setIsLoggedIn(true);
-        
+
         // Store in localStorage for persistence
         localStorage.setItem("user", JSON.stringify({ email }));
-        
+
         // Show login alert
         setShowAlert(true);
-        
+
         // Hide alert after 3 seconds
         setTimeout(() => {
           setShowAlert(false);
@@ -112,7 +112,13 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
 
   // Alert component
   const Alert = ({ message, type }) => (
-    <div className={`fixed top-16 right-4 p-4 rounded-md shadow-md ${type === 'success' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'}`}>
+    <div
+      className={`fixed top-16 right-4 p-4 rounded-md shadow-md ${
+        type === "success"
+          ? "bg-green-100 text-green-700"
+          : "bg-blue-100 text-blue-700"
+      }`}
+    >
       {message}
     </div>
   );
@@ -121,7 +127,9 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
   if (isLoggedIn) {
     return (
       <>
-        {showAlert && <Alert message="You have successfully logged in!" type="success" />}
+        {showAlert && (
+          <Alert message="You have successfully logged in!" type="success" />
+        )}
       </>
     );
   }
@@ -132,14 +140,12 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
   }
 
   return (
-    <div
-      className="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-opacity-50 z-50"
-    >
+    <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-opacity-50 z-50">
       <div className="bg-white rounded-lg p-6 w-full max-w-md">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-bold text-orange-800">Account</h2>
           <button
-            className="text-gray-500 hover:text-gray-700"
+            className="text-red-500 hover:text-red-700"
             onClick={onClose}
           >
             <svg
