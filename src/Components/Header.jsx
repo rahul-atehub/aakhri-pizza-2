@@ -52,7 +52,7 @@ export default function Header({
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link to="/" className="text-gray-800 hover:text-gray-600">
-              <h1 className="text-2xl sm:text-3xl text-orange-900 font-bold">
+              <h1 className="text-2xl sm:text-3xl md:text-lg text-orange-900 font-bold">
                 AAKHRI PIZZA
               </h1>
             </Link>
@@ -62,34 +62,34 @@ export default function Header({
           <div className="flex-1 mx-4 md:mx-6 lg:mx-8 flex justify-center">
             <SearchBar
               onSearch={onSearch}
-              className="w-full max-w-[120px] sm:max-w-[160px] md:max-w-[220px] lg:max-w-[280px] flex items-center"
+              className="w-full max-w-[120px] sm:max-w-[160px] md:max-w-[160px] lg:max-w-[280px] flex items-center"
               showPlaceholder={!isMobileView}
             />
           </div>
 
           {/* Navigation Links - Desktop */}
-          <nav className="hidden md:flex items-center space-x-5 lg:space-x-6">
+          <nav className="hidden md:flex items-center space-x-5 md:space-x-2 lg:space-x-6">
             <NavLink
               to="/"
-              className="hover:underline text-orange-900 font-medium px-1"
+              className="hover:underline text-orange-900 font-medium px-1 md:p-0"
             >
               Home
             </NavLink>
             <NavLink
               to="/about-us"
-              className="hover:underline text-orange-900 font-medium px-1"
+              className="hover:underline text-orange-900 font-medium px-1 md:p-0"
             >
               About Us
             </NavLink>
             <NavLink
               to="/menu"
-              className="hover:underline text-orange-900 font-medium px-1"
+              className="hover:underline text-orange-900 font-medium px-1 md:p-0"
             >
               Menu
             </NavLink>
             <NavLink
               to="/order-online"
-              className="hover:underline text-orange-900 font-medium px-1"
+              className="hover:underline text-orange-900 font-medium px-1 md:p-0"
             >
               Order Online
             </NavLink>
