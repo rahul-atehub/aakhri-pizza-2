@@ -40,7 +40,7 @@ export default function SearchBar({
         onChange={handleInputChange}
         onKeyPress={handleKeyPress}
         placeholder={showPlaceholder ? "Search ..." : ""}
-        className="w-20 sm:w-auto flex-grow focus:outline-none text-orange-900 bg-transparent sm:pl-8 md:pl-10 lg:pl-12"
+        className="w-20 sm:w-auto flex-grow focus:outline-none text-orange-900 bg-transparent pl-6 sm:pl-8 md:pl-10 lg:pl-12"
       />
     </div>
   );

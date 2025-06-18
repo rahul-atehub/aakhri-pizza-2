@@ -11,52 +11,52 @@ import LoginModal from "./Components/Login.jsx";
 import Cart, { CartProvider } from "./Cart.jsx";
 // Import CartProvider
 
-
 function App() {
   const [searchResults, setSearchResults] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [user, setUser] = useState(null);
-  
+
   // Check for existing user in localStorage on component mount
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
+    const storedUser = localStorage.getItem("user");
     if (storedUser) {
       try {
         setUser(JSON.parse(storedUser));
       } catch (error) {
-        console.error('Error parsing stored user:', error);
-        localStorage.removeItem('user');
+        console.error("Error parsing stored user:", error);
+        localStorage.removeItem("user");
       }
     }
   }, []);
-  
+
   // Handle login/logout functionality
   const handleLoginClick = () => {
     if (user) {
       // If user is logged in, log them out
       setUser(null);
-      localStorage.removeItem('user');
+      localStorage.removeItem("user");
+      setIsLoginModalOpen(false); // Ensure modal is closed on logout
     } else {
       // If not logged in, show login modal
       setIsLoginModalOpen(true);
     }
   };
-  
+
   // Handle successful login
   const handleLoginSuccess = (userData) => {
     setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
+    localStorage.setItem("user", JSON.stringify(userData));
     setIsLoginModalOpen(false);
   };
-  
+
   const handleSearch = (searchTerm) => {
     setSearchTerm(searchTerm);
     if (!searchTerm.trim()) {
       setSearchResults([]);
       return;
     }
-    
+
     const results = menuData.filter(
       (item) =>
         item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -64,7 +64,7 @@ function App() {
     );
     setSearchResults(results);
   };
-  
+
   return (
     // Wrap the entire app with CartProvider
     <CartProvider>
@@ -76,7 +76,7 @@ function App() {
           isLoggedIn={!!user}
           userName={user?.email}
         />
-        
+
         {/* Main Content Section */}
         <main className="flex-grow">
           <Routes>
@@ -98,16 +98,15 @@ function App() {
             <Route path="/about-us" element={<AboutUs />} />
             <Route path="/Order-Online" element={<OrderForm />} />
             <Route path="/cart" element={<Cart />} />
-
           </Routes>
-          
+
           <LoginModal
             isOpen={isLoginModalOpen}
             onClose={() => setIsLoginModalOpen(false)}
             onLoginSuccess={handleLoginSuccess}
           />
         </main>
-        
+
         {/* Footer Section */}
         <Footer />
       </div>

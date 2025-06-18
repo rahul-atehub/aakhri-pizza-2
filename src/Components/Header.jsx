@@ -4,21 +4,30 @@ import SearchBar from "./SearchBar";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
 import { useCart } from "../Cart.jsx"; // Import the useCart hook
 
-export default function Header({ onSearch, onLoginClick, isLoggedIn, userName }) {
+export default function Header({
+  onSearch,
+  onLoginClick,
+  isLoggedIn,
+  userName,
+}) {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobileView, setIsMobileView] = useState(false);
-  
+
   // Use the cart context to get cart functions and state
-  const { toggleCart, getCartCount } = useCart();
+  const { toggleCart, getCartCount, cartItems } = useCart();
   const cartCount = getCartCount();
+
+  const handleMenuItemClick = () => {
+    setMobileMenuOpen(false);
+  };
 
   useEffect(() => {
     const checkScreenSize = () => {
       setIsMobileView(window.innerWidth <= 480);
     };
     checkScreenSize();
-    window.addEventListener('resize', checkScreenSize);
-    return () => window.removeEventListener('resize', checkScreenSize);
+    window.addEventListener("resize", checkScreenSize);
+    return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
   // Handle Profile click to trigger login/logout function
@@ -26,6 +35,7 @@ export default function Header({ onSearch, onLoginClick, isLoggedIn, userName })
     e.preventDefault(); // Prevent default navigation
     if (onLoginClick) {
       onLoginClick();
+      setMobileMenuOpen(false); // Close mobile menu when clicking login/logout
     }
   };
 
@@ -83,7 +93,7 @@ export default function Header({ onSearch, onLoginClick, isLoggedIn, userName })
             >
               Order Online
             </NavLink>
-            
+
             {/* Profile/Login link with dynamic text based on authentication status */}
             <a
               href="#"
@@ -93,13 +103,13 @@ export default function Header({ onSearch, onLoginClick, isLoggedIn, userName })
               <FaUser className="mr-1.5" />
               {isLoggedIn ? (
                 <span className="flex items-center">
-                  {userName ? userName.split('@')[0] : 'Profile'}
+                  {userName ? userName.split("@")[0] : "Profile"}
                 </span>
               ) : (
-                'Login'
+                "Login"
               )}
             </a>
-            
+
             {/* Cart button with count badge */}
             <a
               href="#"
@@ -114,15 +124,21 @@ export default function Header({ onSearch, onLoginClick, isLoggedIn, userName })
               )}
             </a>
           </nav>
-
           {/* Mobile Menu Button */}
-          <div className="md:hidden">
+          <div className="relative md:hidden">
             <button
               onClick={() => setMobileMenuOpen(!isMobileMenuOpen)}
               className="text-orange-900 focus:outline-none hover:text-orange-700 text-2xl p-2"
             >
               {isMobileMenuOpen ? "✖" : "☰"}
             </button>
+
+            {/* Cart count badge on menu icon (only on small screens) */}
+            {cartItems.length > 0 && (
+              <span className="absolute top-1 right-1 bg-red-600 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full animate-bounce">
+                {cartItems.length}
+              </span>
+            )}
           </div>
         </div>
 
@@ -131,29 +147,33 @@ export default function Header({ onSearch, onLoginClick, isLoggedIn, userName })
           <div className="absolute top-16 right-3 bg-white shadow-lg p-2 w-40 sm:w-48 rounded-md z-30">
             <NavLink
               to="/"
+              onClick={handleMenuItemClick}
               className="block text-orange-900 font-medium hover:bg-orange-100 p-2.5 rounded"
             >
               Home
             </NavLink>
             <NavLink
               to="/menu"
+              onClick={handleMenuItemClick}
               className="block text-orange-900 font-medium hover:bg-orange-100 p-2.5 rounded"
             >
               Menu
             </NavLink>
             <NavLink
               to="/about-us"
+              onClick={handleMenuItemClick}
               className="block text-orange-900 font-medium hover:bg-orange-100 p-2.5 rounded"
             >
               About
             </NavLink>
             <NavLink
               to="/order-online"
+              onClick={handleMenuItemClick}
               className="block text-orange-900 font-medium hover:bg-orange-100 p-2.5 rounded"
             >
               Order Online
             </NavLink>
-            
+
             {/* Profile/Login link in mobile menu */}
             <a
               href="#"
@@ -163,13 +183,13 @@ export default function Header({ onSearch, onLoginClick, isLoggedIn, userName })
               <FaUser className="mr-2" />
               {isLoggedIn ? (
                 <span>
-                  {userName ? userName.split('@')[0] : 'Profile'} (Logout)
+                  {userName ? userName.split("@")[0] : "Profile"} (Logout)
                 </span>
               ) : (
-                'Login'
+                "Login"
               )}
             </a>
-            
+
             {/* Cart link in mobile menu */}
             <a
               href="#"

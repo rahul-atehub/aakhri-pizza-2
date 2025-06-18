@@ -33,7 +33,7 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
     if (activeTab === "register" && password !== confirmPassword) {
       setError("Passwords do not match");
       return false;
-    } 
+    }
 
     return true;
   };
@@ -141,13 +141,10 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-opacity-50 z-50">
-      <div className="bg-white rounded-lg p-6 w-full max-w-md">
+      <div className="bg-white rounded-lg p-6 w-full max-w-xs sm:max-w-sm md:max-w-md">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-bold text-orange-800">Account</h2>
-          <button
-            className="text-red-500 hover:text-red-700"
-            onClick={onClose}
-          >
+          <button className="text-red-500 hover:text-red-700" onClick={onClose}>
             <svg
               className="w-5 h-5"
               fill="none"

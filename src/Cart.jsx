@@ -205,16 +205,16 @@ export default function Cart() {
               </div>
             ) : (
               <div className="space-y-4">
-                {cartItems.map((item) => (
+                {cartItems.map((item, index) => (
                   <div
-                    key={item.id}
+                    key={item.id || `cart-item-${index}`}
                     className="flex border-b border-gray-100 pb-4"
                   >
                     <div className="w-20 h-20">
                       <img
                         src={
                           item.image_url ||
-                          "https://via.placeholder.com/80x80?text=Food"
+                          "https://placehold.co/80x80/png?text=Food"
                         }
                         alt={item.name}
                         className="w-full h-full object-cover rounded"

@@ -8,7 +8,7 @@ export default function Menu({ searchTerm, searchResults }) {
   const [randomPizzas, setRandomPizzas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
   // Use the cart context
   const { addToCart } = useCart();
 
@@ -30,14 +30,15 @@ export default function Menu({ searchTerm, searchResults }) {
         // Check if we have categories data
         if (response.data && response.data.categories) {
           // Transform categories data to menu items format
-          const menuItems = response.data.categories.map(category => ({
+          const menuItems = response.data.categories.map((category) => ({
             id: category.idCategory,
             name: category.strCategory,
-            description: category.strCategoryDescription.substring(0, 100) + "...",
+            description:
+              category.strCategoryDescription.substring(0, 100) + "...",
             image_url: category.strCategoryThumb,
-            price: ((Math.random() * 10) + 5).toFixed(2) // Generate random price between $5-$15
+            price: (Math.random() * 10 + 5).toFixed(2), // Generate random price between $5-$15
           }));
-          
+
           console.log("Transformed data:", menuItems);
           setMenuData(menuItems);
           selectRandomPizzas(menuItems);
@@ -45,7 +46,7 @@ export default function Menu({ searchTerm, searchResults }) {
           // If API returns unexpected format
           setError("No menu items found. Please try again later.");
         }
-        
+
         setLoading(false);
       } catch (err) {
         console.error("Fetch error:", err.message);
@@ -90,11 +91,11 @@ export default function Menu({ searchTerm, searchResults }) {
 
   // Determine which items to display based on search
   const itemsToDisplay = searchTerm
-    ? (searchResults && searchResults.length > 0) 
-        ? searchResults 
-        : menuData.filter(item => 
-            item.name.toLowerCase().includes(searchTerm.toLowerCase())
-          )
+    ? searchResults && searchResults.length > 0
+      ? searchResults
+      : menuData.filter((item) =>
+          item.name.toLowerCase().includes(searchTerm.toLowerCase())
+        )
     : randomPizzas.length > 0
     ? randomPizzas
     : menuData;
@@ -102,7 +103,7 @@ export default function Menu({ searchTerm, searchResults }) {
   // Handle add to cart with notification
   const handleAddToCart = (item) => {
     addToCart(item);
-    
+
     // Show a notification or feedback
     showAddToCartNotification(item.name);
   };
@@ -110,17 +111,18 @@ export default function Menu({ searchTerm, searchResults }) {
   // Function to show a temporary add-to-cart notification
   const showAddToCartNotification = (itemName) => {
     // Create notification element
-    const notification = document.createElement('div');
-    notification.className = 'fixed bottom-4 right-4 bg-green-500 text-white py-2 px-4 rounded shadow-lg z-50';
+    const notification = document.createElement("div");
+    notification.className =
+      "fixed bottom-4 right-4 bg-green-500 text-white py-2 px-4 rounded shadow-lg z-50";
     notification.textContent = `${itemName} added to cart!`;
-    
+
     // Add to document
     document.body.appendChild(notification);
-    
+
     // Remove after 2 seconds
     setTimeout(() => {
-      notification.style.opacity = '0';
-      notification.style.transition = 'opacity 0.5s ease';
+      notification.style.opacity = "0";
+      notification.style.transition = "opacity 0.5s ease";
       setTimeout(() => {
         if (document.body.contains(notification)) {
           document.body.removeChild(notification);
@@ -164,7 +166,9 @@ export default function Menu({ searchTerm, searchResults }) {
           {itemsToDisplay.length === 0 ? (
             <p className="text-red-500">No results found for "{searchTerm}"</p>
           ) : (
-            <p className="text-green-600">Found {itemsToDisplay.length} results for "{searchTerm}"</p>
+            <p className="text-green-600">
+              Found {itemsToDisplay.length} results for "{searchTerm}"
+            </p>
           )}
         </div>
       )}
@@ -190,10 +194,8 @@ export default function Menu({ searchTerm, searchResults }) {
                 </h3>
                 <p className="text-gray-600 mb-2">{item.description}</p>
                 <div className="flex items-center justify-between mb-3">
-                  <p className="text-orange-600 font-bold">
-                    ${item.price}
-                  </p>
-                  <button 
+                  <p className="text-orange-600 font-bold">${item.price}</p>
+                  <button
                     className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition-colors text-sm"
                     onClick={() => handleAddToCart(item)}
                   >
@@ -205,7 +207,9 @@ export default function Menu({ searchTerm, searchResults }) {
           ))
         ) : (
           <div className="col-span-3 text-center py-8">
-            <p className="text-gray-500">No items found matching your search.</p>
+            <p className="text-gray-500">
+              No items found matching your search.
+            </p>
           </div>
         )}
       </div>
@@ -221,4 +225,4 @@ Menu.propTypes = {
 Menu.defaultProps = {
   searchTerm: "",
   searchResults: [],
-};  
+};

@@ -7,14 +7,14 @@ import { useCart } from "./Cart.jsx"; // Import the useCart hook
 export default function MainLayout() {
   // Use the cart context
   const { addToCart } = useCart();
-  
+
   // Use the default pizzas list
   const pizzasToDisplay = menuData.slice(0, 6);
-  
+
   // Handle add to cart with notification
   const handleAddToCart = (pizza) => {
     addToCart(pizza);
-    
+
     // Show a notification
     showAddToCartNotification(pizza.name);
   };
@@ -22,17 +22,18 @@ export default function MainLayout() {
   // Function to show a temporary add-to-cart notification
   const showAddToCartNotification = (itemName) => {
     // Create notification element
-    const notification = document.createElement('div');
-    notification.className = 'fixed bottom-4 right-4 bg-green-500 text-white py-2 px-4 rounded shadow-lg z-50';
+    const notification = document.createElement("div");
+    notification.className =
+      "fixed bottom-4 right-4 bg-green-500 text-white py-2 px-4 rounded shadow-lg z-50";
     notification.textContent = `${itemName} added to cart!`;
-    
+
     // Add to document
     document.body.appendChild(notification);
-    
+
     // Remove after 2 seconds
     setTimeout(() => {
-      notification.style.opacity = '0';
-      notification.style.transition = 'opacity 0.5s ease';
+      notification.style.opacity = "0";
+      notification.style.transition = "opacity 0.5s ease";
       setTimeout(() => {
         if (document.body.contains(notification)) {
           document.body.removeChild(notification);
@@ -40,25 +41,26 @@ export default function MainLayout() {
       }, 500);
     }, 2000);
   };
-  
+
   return (
     <>
       <div
-        className="min-h-[70vh] bg-cover bg-center flex flex-col justify-center items-start px-4 sm:px-8"
+        className="min-h-[40vh] sm:min-h-[50vh] md:min-h-[60vh] lg:min-h-[35vh] bg-cover bg-center flex flex-col justify-center items-start px-4 sm:px-8"
         style={{
           backgroundImage:
             "url(https://cdn.pixabay.com/photo/2020/03/21/02/26/pizza-4952508_1280.jpg)",
         }}
       >
         <div>
-          <h1 className="text-3xl text-orange-200 sm:text-4xl lg:text-5xl font-bold text-left">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-orange-200 font-bold text-left">
             Welcome to Aakhri Pizza
           </h1>
-          <p className="text-base text-orange-200 sm:text-lg lg:text-xl mt-2 text-left">
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl mt-2 text-orange-200 text-left">
             The best pizza experience awaits you!
           </p>
         </div>
       </div>
+
       <div className="specialties-section w-full max-w-7xl justify-around m-auto px-4 sm:px-8 py-8">
         <h2 className="text-2xl sm:text-3xl text-orange-900 font-bold text-center mb-6">
           Our Specialties
@@ -84,7 +86,7 @@ export default function MainLayout() {
                 <p className="text-orange-700 font-bold text-center mt-2">
                   ${pizza.price}
                 </p>
-                <button 
+                <button
                   className="bg-orange-500 text-white text-sm mt-3 px-4 py-2 rounded opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 mx-auto block hover:bg-orange-600"
                   onClick={(e) => {
                     e.stopPropagation(); // Prevent any parent click events

@@ -5,10 +5,10 @@ export default function OurLocations() {
   const locations = [
     { city: "Jaipur", count: 5 },
     { city: "Mumbai", count: 5 },
-    { city: "hyderabad", count: 4 },
+    { city: "Hyderabad", count: 4 },
     { city: "chandigarh", count: 2 },
-    { city: "lukhnow", count: 3 },
-    { city: "delhi", count: 5 },
+    { city: "Lukhnow", count: 3 },
+    { city: "Delhi", count: 5 },
   ];
 
   return (
