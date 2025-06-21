@@ -45,7 +45,7 @@ export default function MainLayout() {
   return (
     <>
       <div
-        className="sm:min-h-[50vh] md:min-h-[60vh] bg-cover bg-center flex flex-col justify-center items-start px-4 sm:px-8 lg:min-h-0 lg:h-[65vh]"
+        className="min-h-[40vh] sm:min-h-[50vh] md:min-h-[60vh] bg-cover bg-center flex flex-col justify-center items-start px-4 sm:px-8 lg:min-h-0 lg:h-[65vh]"
         style={{
           backgroundImage:
             "url(https://cdn.pixabay.com/photo/2020/03/21/02/26/pizza-4952508_1280.jpg)",
